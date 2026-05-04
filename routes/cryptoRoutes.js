@@ -15,6 +15,7 @@ import {
   getNewListings,
   createCrypto,
   deleteCrypto,
+  updateCrypto,
 } from '../controllers/cryptoController.js';
 
 const router = express.Router();
@@ -32,8 +33,9 @@ router.get('/new', getNewListings);
 router.post('/', createCrypto);
 
 // DELETE /api/crypto/:id  → delete by ID
-// /:id is a dynamic segment — Express captures whatever is in that position
-// and puts it in req.params.id inside the controller
 router.delete('/:id', deleteCrypto);
+
+// PUT /api/crypto/:id     → update by ID
+router.put('/:id', updateCrypto);
 
 export default router;

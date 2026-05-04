@@ -108,3 +108,31 @@ export const deleteCrypto = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+// ─── UPDATE A CRYPTO ───────────────────────────────────────
+// PUT /api/crypto/:id
+// Updates an existing cryptocurrency by its ID
+export const updateCrypto = async (req, res) => {
+  try {
+    const { name, symbol, price, image, change24h } = req.body;
+    
+    // Find and update in one go
+    // { new: true } returns the updated document instead of the old one
+    const crypto = await Crypto.findByIdAndUpdate(
+      req.params.id,
+      { name, symbol, price, image, change24h },
+      { new: true, runValidators: true }
+    );
+
+    if (!crypto) {
+      return res.status(404).json({ message: 'Crypto not found' });
+    }
+
+    res.json({
+      message: 'Cryptocurrency updated successfully',
+      crypto,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
